@@ -282,3 +282,6 @@ function handleProfileDropdown(isHover) {
     }, 300);
   }
 }
+function viewallitem(){
+  window.location.href = "pages/viewall.html";
+}
