@@ -20,6 +20,8 @@ const db = getDatabase(app);  // Firebase Database reference
 // Extract productId from URL
 const urlParams = new URLSearchParams(window.location.search);
 const productId = urlParams.get('productId');
+console.log("productId : ",productId);
+
 
 // Define base URL for product image/model paths
 const baseURL = "https://www.casio.com";
@@ -30,6 +32,7 @@ function getProduct(productId) {
     .then(snapshot => {
       if (snapshot.exists()) {
         const product = snapshot.val();
+        console.log("product",product);
         updateUI(product);
       } else {
         console.error("No data available for product ID:", productId);

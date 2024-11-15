@@ -60,7 +60,7 @@ fetch('utils/data.json')
 
       const productImageUrl = `${baseUrl}${product.productAssets.path}`;
       const hoverImageUrl = `${baseUrl}${product.productAssetList[1].path}`;
-      const detailPageUrl = `../pages/productDetailPage/product_detail.html?productId=${product.sku}`;
+      const detailPageUrl = '/DuoProject/pages/productDetailPage/product_detail.html?productId=' + product.sku;
 
       card.innerHTML = `
         <a href="${detailPageUrl}" class="card-link">
