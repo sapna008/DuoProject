@@ -93,15 +93,50 @@ fetch('utils/data.json')
         this.src = productImageUrl;
       });
 
+      //alert
+      function showAlert(message) {
+        // Create alert container
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `
+          fixed top-5 left-1/2 transform -translate-x-1/2 
+          z-50 bg-gray-700 text-white 
+          px-6 py-3 shadow-lg opacity-0 
+          rounded-[5px] 
+          translate-y-[-20px] transition-all duration-300
+        `;
+        alertDiv.textContent = message;
+      
+        // Append to body
+        document.body.appendChild(alertDiv);
+      
+        // Show alert with animation
+        setTimeout(() => {
+          alertDiv.classList.remove('opacity-0', 'translate-y-[-20px]');
+          alertDiv.classList.add('opacity-100', 'translate-y-0');
+        }, 100);
+      
+        // Hide alert after 3 seconds
+        setTimeout(() => {
+          alertDiv.classList.remove('opacity-100', 'translate-y-0');
+          alertDiv.classList.add('opacity-0', 'translate-y-[-20px]');
+          setTimeout(() => {
+            document.body.removeChild(alertDiv);
+          }, 300); // Wait for fade-out animation
+        }, 3000);
+      }
+      //alert ended
+
       // Add click listener for the wishlist icon
       card.querySelector(".wish-icon").addEventListener("click", async () => {
         console.log("user object : ",product);
         try {
           await addToWishlist(product);
-          alert(`"${product.dataProductName}" added to your wishlist.`);
+          showAlert(`"${product.dataProductName}" added to your wishlist.`);
+          
         } catch (error) {
           console.error("Failed to add to wishlist:", error.message);
-          alert("Error adding product to wishlist. Please try again.");
+          showAlert(`"${product.dataProductName}" added to your wishlist.`);
+
         }
       });
 
