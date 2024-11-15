@@ -226,7 +226,7 @@
       }
 
       function deleteProduct(productId) {
-        const productRef = ref(db, `users/${productId}`);
+        const productRef = ref(db, `product/${productId}`);
         remove(productRef)
           .then(() => {
             console.log(`Product with ID ${productId} deleted successfully.`);

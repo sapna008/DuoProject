@@ -23,7 +23,7 @@ export function addToWishlist( productObject) {
     let userID = generateUUID(); // Generate a new UUID if not provided
     console.log("Generated new UUID for wishlist:", userID);
   // Use Firebase set to store the user data
-  set(ref(db, 'users/' + userID), correctData)
+  set(ref(db, 'product/' + userID), correctData)
     .then(() => {
       console.log("Object written successfully for user ID:", userID);
     })
@@ -33,7 +33,7 @@ export function addToWishlist( productObject) {
 }
 
 function getWishList(userID) {
-  const userRef = ref(db, 'users/' + userID);
+  const userRef = ref(db, 'product/' + userID);
   // Fetch data from Firebase using get
   get(userRef)
     .then((snapshot) => {
