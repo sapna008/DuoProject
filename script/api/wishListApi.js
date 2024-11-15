@@ -32,9 +32,8 @@ export function addToWishlist( productObject) {
     });
 }
 
-function getWishList(userID) {
+function getProduct(userID) {
   const userRef = ref(db, 'product/' + userID);
-  // Fetch data from Firebase using get
   get(userRef)
     .then((snapshot) => {
       if (snapshot.exists()) {

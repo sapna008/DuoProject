@@ -1,6 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import { getDatabase, set, get, ref } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyDxdyyL_TF-A_99KRxlDdRgzRc6_mkDL-0",
   authDomain: "casio-4ac93.firebaseapp.com",
@@ -37,6 +36,21 @@ function addToWishlist(product) {
     });
 }
 
+function getProduct(userID) {
+  const userRef = ref(db, 'product/' + userID);
+  get(userRef)
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log("User data:", snapshot.val());
+      } else {
+        console.log("No data available for user ID:", userID);
+      }
+    })
+    .catch((error) => {
+      console.error("Error reading data:", error);
+    });
+}
+
 fetch('utils/data.json')
   .then(response => response.json())
   .then(data => {
@@ -46,32 +60,34 @@ fetch('utils/data.json')
 
       const productImageUrl = `${baseUrl}${product.productAssets.path}`;
       const hoverImageUrl = `${baseUrl}${product.productAssetList[1].path}`;
+      const detailPageUrl = `../pages/productDetailPage/product_detail.html?productId=${product.sku}`;
 
       card.innerHTML = `
-        <div class="image-container relative overflow-hidden h-3/5">
-          <img src="${productImageUrl}" alt="${product.dataProductName}" class="product-img transition-all duration-300 ease-in-out w-full h-full object-cover rounded-t-lg">
-          <div class="top-left absolute top-0 left-0 bg-black bg-opacity-50 text-white p-1 text-sm hover:opacity-0 transition-opacity duration-300">${product.productCategory}</div>
-          <div class="top-right absolute top-0 right-0 text-gray-400 hover:text-black p-1 rounded-full text-2xl transition-colors duration-300 wish-icon">&#9825;</div>
-        </div>
-        <div class="card-details h-2/5 mt-2 text-left p-4">
-          <div class="brand font-semibold">${product.brandDisp}</div>
-          <div class="name text-gray-700">${product.dataProductName}</div>
-          <div class="price-label text-gray-500 text-xs pt-4">MRP:</div>
-          <div class="price text-xl font-bold">${product.dispPrice}</div>
-        </div>
+        <a href="${detailPageUrl}" class="card-link">
+          <div class="image-container relative overflow-hidden h-3/5">
+            <img src="${productImageUrl}" alt="${product.dataProductName}" class="product-img transition-all duration-300 ease-in-out w-full h-full object-cover rounded-t-lg">
+            <div class="top-left absolute top-0 left-0 bg-black bg-opacity-50 text-white p-1 text-sm hover:opacity-0 transition-opacity duration-300">${product.productCategory}</div>
+          </div>
+          <div class="card-details h-2/5 mt-2 text-left p-4">
+            <div class="brand font-semibold">${product.brandDisp}</div>
+            <div class="name text-gray-700">${product.dataProductName}</div>
+            <div class="price-label text-gray-500 text-xs pt-4">MRP:</div>
+            <div class="price text-xl font-bold">${product.dispPrice}</div>
+          </div>
+        </a>
+        <div class="top-right absolute top-0 right-0 text-gray-400 hover:text-black p-1 rounded-full text-2xl transition-colors duration-300 wish-icon">&#9825;</div>
       `;
 
       // Add hover effect for the product image
-      card.querySelector('.product-img').addEventListener('mouseover', function() {
+      card.querySelector('.product-img').addEventListener('mouseover', function () {
         this.src = hoverImageUrl;
       });
-      card.querySelector('.product-img').addEventListener('mouseout', function() {
+      card.querySelector('.product-img').addEventListener('mouseout', function () {
         this.src = productImageUrl;
       });
 
-      //alert
+      // Alert function remains the same
       function showAlert(message) {
-        // Create alert container
         const alertDiv = document.createElement('div');
         alertDiv.className = `
           fixed top-5 left-1/2 transform -translate-x-1/2 
@@ -81,38 +97,33 @@ fetch('utils/data.json')
           translate-y-[-20px] transition-all duration-300
         `;
         alertDiv.textContent = message;
-      
-        // Append to body
+
         document.body.appendChild(alertDiv);
-      
-        // Show alert with animation
+
         setTimeout(() => {
           alertDiv.classList.remove('opacity-0', 'translate-y-[-20px]');
           alertDiv.classList.add('opacity-100', 'translate-y-0');
         }, 100);
-      
-        // Hide alert after 3 seconds
+
         setTimeout(() => {
           alertDiv.classList.remove('opacity-100', 'translate-y-0');
           alertDiv.classList.add('opacity-0', 'translate-y-[-20px]');
           setTimeout(() => {
             document.body.removeChild(alertDiv);
-          }, 300); // Wait for fade-out animation
+          }, 300);
         }, 3000);
       }
-      //alert ended
 
       // Add click listener for the wishlist icon
-      card.querySelector(".wish-icon").addEventListener("click", async () => {
-        console.log("user object : ",product);
+      card.querySelector('.wish-icon').addEventListener('click', async (event) => {
+        event.preventDefault(); // Prevent navigation to the product detail page
+        console.log("user object : ", product);
         try {
           await addToWishlist(product);
           showAlert(`"${product.dataProductName}" added to your wishlist.`);
-          
         } catch (error) {
           console.error("Failed to add to wishlist:", error.message);
-          showAlert(`"${product.dataProductName}" added to your wishlist.`);
-
+          showAlert(`"${product.dataProductName}" failed to be added to your wishlist.`);
         }
       });
 
@@ -120,6 +131,7 @@ fetch('utils/data.json')
     });
   })
   .catch(error => console.error('Error loading data:', error));
+
 
 // JavaScript for slider functionality
 const leftArrow = document.getElementById('left-arrow');
