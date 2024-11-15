@@ -1,3 +1,6 @@
+import { addToWishlist } from "./api/wishListApi";
+
+// Import the addToWishList function from wishlist.js
 const baseUrl = "https://www.casio.com";
 const productContainer = document.getElementById('product-cards');
 
@@ -16,7 +19,7 @@ fetch('utils/data.json')
         <div class="image-container relative overflow-hidden h-3/5">
           <img src="${productImageUrl}" alt="${product.dataProductName}" class="product-img transition-all duration-300 ease-in-out w-full h-full object-cover rounded-t-lg">
           <div class="top-left absolute top-0 left-0 bg-black bg-opacity-50 text-white p-1 text-sm hover:opacity-0 transition-opacity duration-300">${product.productCategory}</div>
-          <div class="top-right absolute top-0 right-0 text-gray-400 hover:text-black p-1 rounded-full text-2xl transition-colors duration-300">&#9825;</div>
+          <div class="top-right absolute top-0 right-0 text-gray-400 hover:text-black p-1 rounded-full text-2xl transition-colors duration-300 wish-icon">&#9825;</div>
         </div>
         <div class="card-details h-2/5 mt-2 text-left p-4">
           <div class="brand font-semibold">${product.brandDisp}</div>
@@ -32,6 +35,17 @@ fetch('utils/data.json')
       });
       card.querySelector('.product-img').addEventListener('mouseout', function() {
         this.src = productImageUrl;
+      });
+
+      // Add click listener for the wishlist icon
+      card.querySelector(".wish-icon").addEventListener("click", async () => {
+        try {
+          await addToWishlist(product.id,product);
+          alert(`"${product.dataProductName}" added to your wishlist.`);
+        } catch (error) {
+          console.error("Failed to add to wishlist:", error.message);
+          alert("Error adding product to wishlist. Please try again.");
+        }
       });
 
       productContainer.appendChild(card);
