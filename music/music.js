@@ -44,7 +44,6 @@
                 `;
 
                 cardsContainer.appendChild(card);
-                console.log(product)
             }
         });
     }

@@ -21,9 +21,8 @@ function sanitizeObjectKeys(obj) {
 export function addToWishlist( productObject) {
   let correctData = sanitizeObjectKeys(productObject)
     let userID = generateUUID(); // Generate a new UUID if not provided
-    console.log("Generated new UUID for wishlist:", userID);
   // Use Firebase set to store the user data
-  set(ref(db, 'product/' + userID), correctData)
+  set(ref(db, 'wishlist/' + userID), correctData)
     .then(() => {
       console.log("Object written successfully for user ID:", userID);
     })
@@ -32,8 +31,8 @@ export function addToWishlist( productObject) {
     });
 }
 
-function getProduct(userID) {
-  const userRef = ref(db, 'product/' + userID);
+function getWishlistItem(userID) {
+  const userRef = ref(db, 'wishlist/' + userID);
   get(userRef)
     .then((snapshot) => {
       if (snapshot.exists()) {
@@ -47,7 +46,7 @@ function getProduct(userID) {
     });
 }
 
-function getAllUsers() {
+function getWishlist() {
   const usersRef = ref(db, 'users'); // Reference to all users
   // Fetch all users' data
   get(usersRef)

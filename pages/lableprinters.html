@@ -29,7 +29,7 @@
     
     // Function to write a full object for a user
     function writeUserData(userID, userObject) {
-      set(ref(db, 'product/' + userID), userObject)
+      set(ref(db, 'wishlist/' + userID), userObject)
         .then(() => {
           console.log("Object written successfully for user ID:", userID);
         })
@@ -40,7 +40,7 @@
 
     // Function to read a single user's data
     function readUserData(userID) {
-      const userRef = ref(db, 'product/' + userID); // Path to the specific user ID
+      const userRef = ref(db, 'wishlist/' + userID); // Path to the specific user ID
       get(userRef)
         .then((snapshot) => {
           if (snapshot.exists()) {

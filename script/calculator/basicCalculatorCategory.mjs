@@ -1,8 +1,6 @@
 import basicCalData from "../../data/basicCalculatorData.mjs";
 
 const displayProducts = document.getElementById("right-products-cont");
-console.log(displayProducts);
-
 const categoryPath = {
   practical: "Basic calculators",
   check: "Check Calculators",

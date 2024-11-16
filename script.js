@@ -9,7 +9,6 @@ function changePage(pageName){
 }
 
 function backPreviousPage(){
-  console.log("called")
 }
 
 function showDropdown(category) {

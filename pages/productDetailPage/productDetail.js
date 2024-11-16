@@ -26,8 +26,8 @@ console.log("productId : ",productId);
 // Define base URL for product image/model paths
 const baseURL = "https://www.casio.com";
 
-function getProduct(productId) {
-  const userRef = ref(db, 'product/' + productId);
+function getWishlistItem(productId) {
+  const userRef = ref(db, 'wishlist/' + productId);
   get(userRef)
     .then(snapshot => {
       if (snapshot.exists()) {
@@ -57,7 +57,7 @@ function updateUI(product) {
 
 // Fetch the product data
 if (productId) {
-  getProduct(productId);
+  getWishlistItem(productId);
 } else {
   console.error("Product ID is missing in the URL");
   document.getElementById('productName').innerText = "Invalid Product ID";

@@ -9,7 +9,6 @@ async function displayCards(products) {
   products.forEach((product) => {
     const card = createCard(product);
     displayProducts.append(card);
-    console.log(product);
   });
 }
 
