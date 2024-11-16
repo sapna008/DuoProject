@@ -228,7 +228,7 @@
       }
 
       function deleteProduct(productId) {
-        const productRef = ref(db, `product/${productId}`);
+        const productRef = ref(db, `wishlist/${productId}`);
         remove(productRef)
           .then(() => {
             console.log(`Product with ID ${productId} deleted successfully.`);
